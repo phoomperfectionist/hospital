@@ -20,4 +20,5 @@ urlpatterns = [
     url(r'^default/', include('ptregister.urls', namespace="ptregister")),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^register/', include('ptregister.urls', namespace="ptregister")),
+    url(r'^timetable/', include('doctor_timetable.urls', namespace='doctor_timetable')),
 ]
