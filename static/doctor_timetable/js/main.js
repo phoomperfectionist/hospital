@@ -167,7 +167,7 @@
 
       todaysEvents.forEach(function(ev, index) {
         var evSpan = createElement('span', ev.color);
-        evSpan.id =  'ev' + (2*(ev.d-1) + (index % 2));
+        evSpan.id =  'ev' + ((2*ev.d-1) + (index % 2));
         element.appendChild(evSpan);
       });
     }
@@ -263,39 +263,40 @@
       	if($(this).is(":checked")) {
       		$(this).parent().parent().next().html('Available');
       		if($(this).parent().parent().parent().is(':first-child')){
-      			$('#ev'+ 2*(ev.d-1)).removeClass('red').addClass('green');
+      			$('#ev'+ (2*ev.d-1)).removeClass('red').addClass('green');
       			ev.eventName = 'Available';
-      			self.changelist[2*(ev.d-1)] = 'Available';
+            console.log(ev.d);
+      			self.changelist[(2*ev.d-1)] = 'Available';
             if(ev.calendar == 'Not Available')
-             self.changelist[2*(ev.d-1)] = 'Available';
+             self.changelist[(2*ev.d-1)] = 'Available';
            else 
-            delete self.changelist[2*(ev.d-1)];
+            delete self.changelist[(2*ev.d-1)];
         } else {
-         $('#ev'+ (2*(ev.d-1)+1)).removeClass('red').addClass('green');
+         $('#ev'+ ((2*ev.d-1)+1)).removeClass('red').addClass('green');
          ev.eventName = 'Available';
-         self.changelist[2*(ev.d-1)+1] = 'Available';
+         self.changelist[(2*ev.d-1)+1] = 'Available';
          if(ev.calendar == 'Not Available')
-           self.changelist[2*(ev.d-1)+1] = 'Available';
+           self.changelist[(2*ev.d-1)+1] = 'Available';
          else 
-          delete self.changelist[2*(ev.d-1)+1];
+          delete self.changelist[(2*ev.d-1)+1];
       }
     } else {
       $(this).parent().parent().next().html('Not Available');
       if($(this).parent().parent().parent().is(':first-child')){
       			// change dot color
-      			$('#ev'+ 2*(ev.d-1)).removeClass('green').addClass('red');
+      			$('#ev'+ (2*ev.d-1)).removeClass('green').addClass('red');
       			ev.eventName = 'Not Available';
             if(ev.calendar == 'Available')
-              self.changelist[2*(ev.d-1)] = 'Not Available';
+              self.changelist[(2*ev.d-1)] = 'Not Available';
             else 
-              delete self.changelist[2*(ev.d-1)];
+              delete self.changelist[(2*ev.d-1)];
           } else {
-           $('#ev'+ (2*(ev.d-1)+1)).removeClass('green').addClass('red');
+           $('#ev'+ ((2*ev.d-1)+1)).removeClass('green').addClass('red');
            ev.eventName = 'Not Available';
            if(ev.calendar == 'Available')
-            self.changelist[2*(ev.d-1)+1] = 'Not Available';
+            self.changelist[(2*ev.d-1)+1] = 'Not Available';
           else 
-            delete self.changelist[2*(ev.d-1)+1];
+            delete self.changelist[(2*ev.d-1)+1];
         }
       }
       self.drawChanges();
@@ -369,7 +370,7 @@ Calendar.prototype.drawChanges = function() {
     // if(this.changelist.length == 0) {
     //   changes.appendChild(createElement('li', '', 'None'));
     // }
-    console.log(this.changelist.length);
+    // console.log(this.changelist.length);
     this.changelist.forEach(function(cl, index){
      var tmp = createElement('li', '', (self.current.year() + '/' + (self.current.month()+1) + 
       '/' + (Math.floor(index/2)+1) + (index%2==0? ' - Morning ' : ' - Afternoon ') + 'is set to ' + cl));
@@ -436,7 +437,7 @@ Calendar.prototype.drawChanges = function() {
   }
 
   Calendar.prototype.getEventByMonth = function() {
-  	console.log('get new event for month ' + (this.current.clone().month()+1));
+  	// console.log('get new event for month ' + (this.current.clone().month()+1));
   	var thisMonthEvents = [];
 
   	var endOfMonth = this.current.clone().endOf('month').date();
@@ -449,18 +450,18 @@ Calendar.prototype.drawChanges = function() {
   	var preparedData = getPrepareData();
 
   	preparedData.forEach(function(pd){
-  		thisMonthEvents[(2*(pd.date - 1)) + pd.period].eventName = thisMonthEvents[(2*(pd.date - 1)) + pd.period].calendar = 'Available';
+  		thisMonthEvents[((2*pd.date - 1)) + pd.period].eventName = thisMonthEvents[((2*pd.date - 1)) + pd.period].calendar = 'Available';
   		//thisMonthEvents[(2*(pd.d - 1)) + pd.p].calendar = 'Available';
-  		thisMonthEvents[(2*(pd.date - 1)) + pd.period].color = 'green';
-      thisMonthEvents[(2*(pd.date - 1)) + pd.period].count = pd.count;
+  		thisMonthEvents[((2*pd.date - 1)) + pd.period].color = 'green';
+      thisMonthEvents[((2*pd.date - 1)) + pd.period].count = pd.count;
   	});
   	return thisMonthEvents;
   }
 
   Calendar.prototype.save = function() {
-  	console.log('save triggered for ' + this.current.month() + '/' + this.current.year());
+  	// console.log('save triggered for ' + this.current.month() + '/' + this.current.year());
     // $('#failed-save-text').show();
-
+    console.log(this.changelist);
     this.changelist = []; // this line must be removed after finish the code below
   	// TODO : fire the http post request to server
     // if(this.changelist.length > 0) {
@@ -501,7 +502,7 @@ Calendar.prototype.drawChanges = function() {
     // })
     
     // TODO : remove two lines below when finish above section
-    preparedData = [{date: 1, period: 0, count: 10}, {date: 1, period: 1, count: 5}, {date: 5, period: 0, count: 5}, 
+    preparedData = [{date: 2, period: 0, count: 10}, {date: 2, period: 1, count: 5}, {date: 5, period: 0, count: 5}, 
                     {date: 9, period: 0, count: 10}, {date: 9, period: 1, count: 15}];
     return preparedData;
   }
